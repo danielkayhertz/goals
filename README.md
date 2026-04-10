@@ -23,7 +23,7 @@ Copy-Item -Recurse goals\skills\goals-* $env:USERPROFILE\.claude\skills\
 
 Then open Claude Code and run `/goals-onboarding` to set up your data directory.
 
-> **Note:** Skill files reference `C:/Users/bpi/Documents/Claude Code/goals/` as the data root. Before using, update this path in each SKILL.md to match your own username and preferred location.
+> **Note:** Skill files reference `~/Documents/Claude Code/goals/` as the data root. Before using, update this path in each SKILL.md to match your own username and preferred location.
 
 ---
 
@@ -95,7 +95,7 @@ Triggers: `"review a project"`, `"update project status"`, `"check on project"`
 
 ## Data Directory Structure
 
-Skills read and write markdown files in a shared data directory (default: `C:/Users/bpi/Documents/Claude Code/goals/`):
+Skills read and write markdown files in a shared data directory (default: `~/Documents/Claude Code/goals/`):
 
 ```
 goals/

@@ -63,7 +63,7 @@ If Python is unavailable, use the `currentDate` context variable and compute the
 
 ## Step 3: Read or create the target week file
 
-Read `C:/Users/bpi/Documents/Claude Code/goals/weekly/[WEEK].md` if it exists.
+Read `~/Documents/Claude Code/goals/weekly/[WEEK].md` if it exists.
 
 If it doesn't exist, create it with this structure:
 

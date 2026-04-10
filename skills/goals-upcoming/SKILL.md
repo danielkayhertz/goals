@@ -61,7 +61,7 @@ If the user specified "work" or "home" in their request, note the active filter.
 ## Step 3: Scan past weekly files for overdue items
 
 For each of the 4 past week labels (offset -4 through -1) and the current week (offset 0):
-- Try to read `C:/Users/bpi/Documents/Claude Code/goals/weekly/[WEEK_LABEL].md`
+- Try to read `~/Documents/Claude Code/goals/weekly/[WEEK_LABEL].md`
 - If the file does not exist, skip it silently
 - For past weeks (offsets -4 through -1): extract all `- [ ]` (unchecked) lines from `## Daily Log` and `## Priorities` sections
 - For the current week (offset 0): extract all `- [ ]` lines from `## Priorities` only (not daily log — today's log items are not overdue yet)
@@ -69,10 +69,10 @@ For each of the 4 past week labels (offset -4 through -1) and the current week (
 
 ## Step 4: Scan project files for upcoming milestones
 
-Read `C:/Users/bpi/Documents/Claude Code/goals/projects/INDEX.md`. If this file is missing, note "Project index not found" and skip to Step 5.
+Read `~/Documents/Claude Code/goals/projects/INDEX.md`. If this file is missing, note "Project index not found" and skip to Step 5.
 
 For each active project (status = active) listed in the index:
-- Read `C:/Users/bpi/Documents/Claude Code/goals/projects/[slug].md`
+- Read `~/Documents/Claude Code/goals/projects/[slug].md`
 - If the file does not exist, skip it silently
 - Extract all rows from the `## Milestones` table where status = `pending` or `in-progress`
 - Record: milestone date, milestone text, project name, and context field if present

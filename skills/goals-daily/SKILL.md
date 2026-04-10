@@ -52,7 +52,7 @@ From this output, extract:
 
 ## Step 2: Read or create the current week file
 
-The weekly file is located at: `C:/Users/bpi/Documents/Claude Code/goals/weekly/[ISO_WEEK].md`
+The weekly file is located at: `~/Documents/Claude Code/goals/weekly/[ISO_WEEK].md`
 
 **If the file does NOT exist**, create it with this template.
 
@@ -133,6 +133,6 @@ After writing the entry:
 
 ## Error handling
 
-- If the goals directory does not exist, create it: `C:/Users/bpi/Documents/Claude Code/goals/weekly/`
+- If the goals directory does not exist, create it: `~/Documents/Claude Code/goals/weekly/`
 - If a date command fails, check the `currentDate` context variable. If that's unavailable, ask the user for today's date in YYYY-MM-DD format
 - If the user's input is unclear during the interview, ask for clarification rather than guessing

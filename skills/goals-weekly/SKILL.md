@@ -52,9 +52,9 @@ State this filter explicitly to the user: "I'll focus on [work/home/both] items.
 
 ### Step 3: Review Last Week's Unchecked Items (if available)
 
-Read the file at: `C:/Users/bpi/Documents/Claude Code/goals/weekly/[LAST_WEEK].md`
+Read the file at: `~/Documents/Claude Code/goals/weekly/[LAST_WEEK].md`
 
-For example, if `last_week=2026-W14`, read `C:/Users/bpi/Documents/Claude Code/goals/weekly/2026-W14.md`
+For example, if `last_week=2026-W14`, read `~/Documents/Claude Code/goals/weekly/2026-W14.md`
 
 Search for all unchecked items (lines starting with `- [ ]`) in the `## Daily Log` and `## Priorities` sections.
 
@@ -66,9 +66,9 @@ If file does not exist or has no unchecked items:
 
 ### Step 4: Read or Create This Week's File
 
-Read the file at: `C:/Users/bpi/Documents/Claude Code/goals/weekly/[ISO_WEEK].md`
+Read the file at: `~/Documents/Claude Code/goals/weekly/[ISO_WEEK].md`
 
-For example, if `iso_week=2026-W15`, read `C:/Users/bpi/Documents/Claude Code/goals/weekly/2026-W15.md`
+For example, if `iso_week=2026-W15`, read `~/Documents/Claude Code/goals/weekly/2026-W15.md`
 
 **If the file does NOT exist:**
 - Create it with the following template structure:
@@ -148,16 +148,16 @@ End the skill execution.
 
 ## File Paths (All absolute, forward slashes)
 
-- Weekly files directory: `C:/Users/bpi/Documents/Claude Code/goals/weekly/`
-- Last week's file: `C:/Users/bpi/Documents/Claude Code/goals/weekly/[LAST_WEEK].md`
-- This week's file: `C:/Users/bpi/Documents/Claude Code/goals/weekly/[ISO_WEEK].md`
+- Weekly files directory: `~/Documents/Claude Code/goals/weekly/`
+- Last week's file: `~/Documents/Claude Code/goals/weekly/[LAST_WEEK].md`
+- This week's file: `~/Documents/Claude Code/goals/weekly/[ISO_WEEK].md`
 
 ## Quality Standards Applied
 
 1. **Python fallback:** Python command includes both `python3` and `python` with proper error handling (`2>/dev/null ||`).
 2. **Date context:** If date command fails, fall back to system context or ask the user.
 3. **No triple-backtick templates:** Priority list format shown as "Format like this:" with plain prose, no fenced code blocks.
-4. **Path format:** All paths use `C:/Users/bpi/...` with forward slashes only.
+4. **Path format:** All paths use `~/...` with forward slashes only.
 5. **Context filter rule:** Explicitly stated—"show if `context == filter OR context == "both"`"—and applied in Question 3.
 6. **YAML frontmatter:** `name: goals-weekly` included in header.
 7. **Interview sequence:** One question at a time, wait for each answer, unambiguous decision points.

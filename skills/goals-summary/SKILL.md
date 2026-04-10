@@ -54,10 +54,10 @@ If no filter specified, show everything.
 
 Attempt to read each file. If a file does not exist, note it as missing — do not error.
 
-1. `C:/Users/bpi/Documents/Claude Code/goals/pillars.md`
-2. `C:/Users/bpi/Documents/Claude Code/goals/quarterly/[QUARTER].md` (use quarter value from Step 1)
-3. `C:/Users/bpi/Documents/Claude Code/goals/weekly/[ISO_WEEK].md` (use iso_week value from Step 1)
-4. `C:/Users/bpi/Documents/Claude Code/goals/projects/INDEX.md`
+1. `~/Documents/Claude Code/goals/pillars.md`
+2. `~/Documents/Claude Code/goals/quarterly/[QUARTER].md` (use quarter value from Step 1)
+3. `~/Documents/Claude Code/goals/weekly/[ISO_WEEK].md` (use iso_week value from Step 1)
+4. `~/Documents/Claude Code/goals/projects/INDEX.md`
 
 ## Step 4: Format and output the summary
 

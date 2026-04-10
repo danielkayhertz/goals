@@ -39,7 +39,7 @@ If Python fails entirely, use the `currentDate` context variable to determine to
 
 ## Step 2: Read quarterly goals for reference
 
-Check if `C:/Users/bpi/Documents/Claude Code/goals/quarterly/[QUARTER].md` exists and read it if so. Extract any listed goals — you will offer these as linkage options in the interview.
+Check if `~/Documents/Claude Code/goals/quarterly/[QUARTER].md` exists and read it if so. Extract any listed goals — you will offer these as linkage options in the interview.
 
 ## Step 3: Interview — ONE QUESTION AT A TIME
 
@@ -69,7 +69,7 @@ Number milestones sequentially: [slug]-m1, [slug]-m2, etc.
 
 ## Step 6: Create the project file
 
-Write `C:/Users/bpi/Documents/Claude Code/goals/projects/[SLUG].md` with these sections:
+Write `~/Documents/Claude Code/goals/projects/[SLUG].md` with these sections:
 
 Frontmatter (YAML):
 ```
@@ -100,7 +100,7 @@ One row per milestone, Status = "pending" for all new milestones.
 
 ## Step 7: Add to INDEX.md
 
-Read `C:/Users/bpi/Documents/Claude Code/goals/projects/INDEX.md`. If the file does not exist, create it with this header first:
+Read `~/Documents/Claude Code/goals/projects/INDEX.md`. If the file does not exist, create it with this header first:
 
 ```
 | slug | name | context | status | quarterly-goal |
@@ -135,7 +135,7 @@ print(str(iso[0]) + '-W' + str(iso[1]).zfill(2))
 
 If Python fails, compute the ISO week manually from the `currentDate` context and the milestone date.
 
-b. The target weekly file path is `C:/Users/bpi/Documents/Claude Code/goals/weekly/[YYYY-Www].md`.
+b. The target weekly file path is `~/Documents/Claude Code/goals/weekly/[YYYY-Www].md`.
 
 c. Idempotency check: If the file exists, read its content and scan for the literal text `stub-id:[SLUG]-mN` (where N is the milestone number). If that exact string is found anywhere on a line, replace that entire line in place with the updated stub line. If it is not found, append the stub line to the `## Priorities` section.
 
@@ -163,7 +163,7 @@ e. Add the following line under `## Priorities`:
 
 Tell the user the following (in plain text, not a code block):
 
-- The project file was created at `C:/Users/bpi/Documents/Claude Code/goals/projects/[SLUG].md`
+- The project file was created at `~/Documents/Claude Code/goals/projects/[SLUG].md`
 - The project was added to INDEX.md
 - Milestone stubs were planted in these weekly files: list each `[YYYY-Www].md` on its own line
 - Suggest next steps: "/goals-project-review [slug] to update status, /goals-upcoming to see all due dates"

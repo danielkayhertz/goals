@@ -18,7 +18,7 @@ You are setting up a personal goal-tracking system. Follow these steps exactly.
 
 ## Step 1: Create the directory structure
 
-First, check whether the goals system is already initialized. If `C:/Users/bpi/Documents/Claude Code/goals/pillars.md` already exists, warn the user:
+First, check whether the goals system is already initialized. If `~/Documents/Claude Code/goals/pillars.md` already exists, warn the user:
 
 > "Goals system already set up. Re-running will overwrite your pillars and project index."
 
@@ -26,9 +26,9 @@ Ask for explicit confirmation before proceeding. If they do not confirm, stop he
 
 If confirmed (or if the file does not exist), run:
 ```bash
-mkdir -p "C:/Users/bpi/Documents/Claude Code/goals/quarterly"
-mkdir -p "C:/Users/bpi/Documents/Claude Code/goals/weekly"
-mkdir -p "C:/Users/bpi/Documents/Claude Code/goals/projects"
+mkdir -p "~/Documents/Claude Code/goals/quarterly"
+mkdir -p "~/Documents/Claude Code/goals/weekly"
+mkdir -p "~/Documents/Claude Code/goals/projects"
 ```
 
 ## Step 2: Interview the user about their strategic pillars
@@ -46,7 +46,7 @@ Collect pillars using the following per-pillar loop. Repeat until the user has d
 
 ## Step 3: Write pillars.md
 
-After collecting all pillar answers, write `C:/Users/bpi/Documents/Claude Code/goals/pillars.md`:
+After collecting all pillar answers, write `~/Documents/Claude Code/goals/pillars.md`:
 
 ```markdown
 ---
@@ -63,7 +63,7 @@ updated: [YYYY-MM-DD]
 
 ## Step 4: Initialize the project INDEX
 
-Write `C:/Users/bpi/Documents/Claude Code/goals/projects/INDEX.md`:
+Write `~/Documents/Claude Code/goals/projects/INDEX.md`:
 
 ```markdown
 # Project Index
@@ -77,7 +77,7 @@ Column formats: `slug` is kebab-case; `context` is work/home/both; `status` is a
 ## Step 5: Confirm completion
 
 Tell the user:
-- The goals directory is set up at `C:/Users/bpi/Documents/Claude Code/goals/`
+- The goals directory is set up at `~/Documents/Claude Code/goals/`
 - Their pillars are saved in `pillars.md`
 - Next steps: run `/goals-quarterly` to set this quarter's goals, then `/goals-weekly` to plan this week
 - Available commands: `/goals-summary`, `/goals-daily`, `/goals-weekly`, `/goals-quarterly`, `/goals-new-project`, `/goals-project-review`, `/goals-schedule`, `/goals-upcoming`

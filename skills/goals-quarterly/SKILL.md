@@ -15,7 +15,7 @@ triggers:
 # /goals-quarterly — Quarterly Planning & Review
 
 ## Overview
-Reviews last quarter's progress and captures this quarter's goals organized by strategic pillar. Reads from `C:/Users/bpi/Documents/Claude Code/goals/pillars.md` (created by `/goals-onboarding`) and reads/writes quarterly goal files.
+Reviews last quarter's progress and captures this quarter's goals organized by strategic pillar. Reads from `~/Documents/Claude Code/goals/pillars.md` (created by `/goals-onboarding`) and reads/writes quarterly goal files.
 
 ## Workflow
 
@@ -36,7 +36,7 @@ print(f'prev_quarter={prev_year}-Q{prev_q}')
 Use fallback: `python3 -c "..." 2>/dev/null || python -c "..."`. If both fail, use `currentDate` context variable (today's date is 2026-04-10).
 
 ### Step 2: Check Pillars Exist
-Read `C:/Users/bpi/Documents/Claude Code/goals/pillars.md`. If missing, tell user:
+Read `~/Documents/Claude Code/goals/pillars.md`. If missing, tell user:
 > "Please run /goals-onboarding first to set up your strategic pillars."
 
 Stop workflow if file is missing.
@@ -53,7 +53,7 @@ The rule: `context == filter OR context == "both"`. No filter = show all.
 From `## Pillars` section in pillars.md, extract pillar names and their context tags (inline as `[work]`, `[home]`, or `[both]`). Apply context filter from Step 3.
 
 ### Step 5: Review Last Quarter (Optional)
-If `C:/Users/bpi/Documents/Claude Code/goals/quarterly/[PREV_QUARTER].md` exists, read and summarize to user:
+If `~/Documents/Claude Code/goals/quarterly/[PREV_QUARTER].md` exists, read and summarize to user:
 - Count completed goals (marked with `✅` or `- [x]`)
 - Count incomplete goals (marked with `- [ ]`)
 - Report pattern: "[N] completed, [M] incomplete. Here are the highlights: [brief list]"
@@ -61,7 +61,7 @@ If `C:/Users/bpi/Documents/Claude Code/goals/quarterly/[PREV_QUARTER].md` exists
 If file doesn't exist, skip silently.
 
 ### Step 6: Load or Create This Quarter's File
-Path: `C:/Users/bpi/Documents/Claude Code/goals/quarterly/[QUARTER].md`
+Path: `~/Documents/Claude Code/goals/quarterly/[QUARTER].md`
 
 If file exists, show user the current goals and ask: "Update these goals, start fresh, or add to them?"
 
@@ -113,15 +113,15 @@ Replace from `## Goals` heading to end of file with new content. Preserve frontm
 Set `updated: [TODAY]` in frontmatter to today's date (YYYY-MM-DD format).
 
 ### Step 10: Write File
-Write updated quarterly file to `C:/Users/bpi/Documents/Claude Code/goals/quarterly/[QUARTER].md`.
+Write updated quarterly file to `~/Documents/Claude Code/goals/quarterly/[QUARTER].md`.
 
 ### Step 11: Confirm
 Tell user: "Goals saved to `quarterly/[QUARTER].md`. Tip: use `/goals-new-project` to set up a workplan for any of these goals."
 
 ## File Paths
 All paths must use forward slashes:
-- Pillars: `C:/Users/bpi/Documents/Claude Code/goals/pillars.md`
-- Quarterly goals: `C:/Users/bpi/Documents/Claude Code/goals/quarterly/[QUARTER].md`
+- Pillars: `~/Documents/Claude Code/goals/pillars.md`
+- Quarterly goals: `~/Documents/Claude Code/goals/quarterly/[QUARTER].md`
 
 ## Quality Standards
 - **Python fallback**: Always use `python3 -c "..." 2>/dev/null || python -c "..."` for cross-platform compatibility
@@ -142,6 +142,6 @@ updated: YYYY-MM-DD
 
 ## Execution Notes
 - This skill is part of the goals system created by `/goals-onboarding`
-- Data directory: `C:/Users/bpi/Documents/Claude Code/goals/`
+- Data directory: `~/Documents/Claude Code/goals/`
 - No git repo required
 - Works with existing quarterly files or creates new ones
