@@ -97,6 +97,23 @@ Format the output as follows (do not wrap the output in a fenced code block):
 
 If a context filter is active, add a line: Showing: [work/home] items only.
 
+**P1 Summary block** (output this before the four sections, only if at least one P1 item exists across any window):
+
+Collect all items tagged `[P1]` from all four buckets (Overdue, This Week, Next 4 Weeks, Weeks 5–12). Sort by date ascending. Format like this:
+
+### P1 — Must Do
+[source/project] — [task text] (due [date] / [week label])
+
+One line per P1 item. If no P1 items exist in any window, omit this block entirely.
+
+---
+
+**Within each of the four sections below**, apply this ordering:
+1. List `[P1]` items first (preserve the `[P1]` tag in the output)
+2. Then list P2 and untagged items
+3. Do NOT list P3 items individually — instead show a count at the end of the section: _(N P3 items not shown)_
+4. Exception: P3 items that are overdue (date < today) ARE shown in the Overdue section regardless of tier
+
 ### Overdue
 
 List each overdue milestone as:
@@ -105,18 +122,20 @@ List each overdue milestone as:
 List each unchecked weekly task as:
   [Week label] — unchecked: [task text]
 
+P1 items first, then P2/untagged, then count of non-overdue P3 items not shown (overdue P3s are always shown).
+
 If nothing is overdue, write: Nothing overdue ✓
 
 ### This Week ([CURRENT WEEK LABEL])
 
-List milestones due this week, one per line:
+List milestones due this week — P1 items first, then P2/untagged, then P3 count. Format:
   [Project name] — [Milestone text] ([date])
 
 If nothing is due this week, write: Nothing due this week.
 
 ### Next 4 Weeks
 
-Group by week label, sorted by date. Format:
+Group by week label, sorted by date. Within each week group: P1 items first, then P2/untagged. Show P3 count at the end of the section (not per-week). Format like this:
 
 [WEEK LABEL]
   [Project name] — [Milestone text] ([date])
@@ -125,7 +144,7 @@ If nothing is due in the next 4 weeks, write: Nothing due in the next 4 weeks.
 
 ### Weeks 5–12
 
-Group by week label, sorted by date. Format:
+Group by week label, sorted by date. Within each week group: P1 items first, then P2/untagged. Show P3 count at the end of the section (not per-week). Format like this:
 
 [WEEK LABEL]
   [Project name] — [Milestone text] ([date])

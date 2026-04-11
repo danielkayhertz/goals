@@ -93,12 +93,17 @@ Check if the user's message contains any of these keywords: "quick", "just log",
 **Quick mode detected:**
 Ask the user: "What's your one-line log for today?"
 - Accept a single line of input
-- Skip the interview questions
+- Skip the interview questions and priority tagging — all tasks default to `[P2]`
 - Proceed directly to Step 5
 
 **Full mode (default):**
+Before the interview, check for yesterday's reflection: read yesterday's `### [Weekday DATE]` section from the current week file (or last week's file if today is Monday). Look for a `#### Reflection` block. If found and the 'Carry forward:' field is not '—', surface it to the user: 'From yesterday's reflection — carry forward: [text]. Keep this in mind as you plan today.' If not found or field is '—', skip silently.
+
 Run an interview with ONE question at a time:
 1. "What are your top 2–3 priorities for today?"
+
+After the user provides their priorities, ask for each task one at a time: 'Is **[task name]** a must-do today? (P1) or normal priority? [default: P2]' Wait for response. Tag P1 → `[P1]`, P2 or no answer → `[P2]`. After all tasks tagged, count P1s. If > 3: 'You have [N] P1 tasks — recommended max is 3 per day. Your P1s: [numbered list]. Downgrade any to P2? (reply with numbers, or keep all)' Soft warning — user decides.
+
 2. "Anything carrying over from yesterday that you didn't finish?"
 
 Wait for the user's response to each question before moving to the next.
@@ -110,10 +115,11 @@ Add a new section to `## Daily Log` in the weekly file with this format.
 Format like this:
 
 ### [WEEKDAY] [TODAY]
-- [ ] [Priority 1]
-- [ ] [Priority 2]
-- [ ] [Priority 3]
+- [ ] [Priority 1] [[context]] [P1]
+- [ ] [Priority 2] [[context]] [P2]
 *(carried over: [item])* — only if user mentioned a carryover
+
+Note: context tag is optional, priority tag (`[P1]` or `[P2]`) is always included.
 
 Rules:
 - Replace `[WEEKDAY]` with the day name (e.g., "Thursday")

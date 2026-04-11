@@ -59,7 +59,7 @@ For example, if `last_week=2026-W14`, read `~/Documents/Claude Code/goals/weekly
 Search for all unchecked items (lines starting with `- [ ]`) in the `## Daily Log` and `## Priorities` sections.
 
 If file exists and unchecked items are found:
-- Tell the user: "From last week, these items were unchecked: [list them]. We'll ask about rolling them over in a moment."
+- Tell the user: "From last week, these items were unchecked: [list them, preserving any [P1]/[P2]/[P3] tags already present]. We'll ask about rolling them over in a moment."
 
 If file does not exist or has no unchecked items:
 - Skip this step silently (no mention to the user).
@@ -112,6 +112,8 @@ Wait for the user's answer after each question before moving to the next.
 
 - Apply the context filter from Step 2: only suggest items relevant to the chosen context (work/home/both).
 - Wait for the user to provide their priorities.
+- After the user answers, ask for each priority one at a time: "Is **[priority name]** a must-do this week? (P1) or normal priority? [default: P2]" Wait for response. Tag P1 → `[P1]`, P2 or no answer → `[P2]`.
+- After all priorities are tagged, count P1s. If > 5: "You have [N] P1 priorities this week — recommended max is 5. Your P1s: [numbered list]. Downgrade any to P2? (reply with numbers, or keep all)" Soft warning — user decides.
 - Move to the next question.
 
 **Question 4:** "Any deadlines or milestones due this week I should note?"
@@ -125,14 +127,15 @@ Replace everything from the `## Priorities` heading up to (but not including) th
 
 Replace the `## Priorities` section in the week's file with a fresh bulleted list. Format like this:
 
-- [ ] [Priority text] [[context tag if known]]
-- [ ] [Deadline text] — due [date] [[context tag]]
-- [ ] [Rolled-over item from last week] [[context tag]]
+- [ ] [Priority text] [[context tag if known]] [P1]
+- [ ] [Priority text] [[context tag if known]] [P2]
+- [ ] [Deadline text] — due [date] [[context tag]] [P2]
+- [ ] [Rolled-over item from last week] [[context tag]] [P2]
 
 Include:
-- The 3–5 priorities the user named in Question 3.
-- Any deadlines from Question 4 (formatted as "— due [date]").
-- Any rolled-over unchecked items from Question 2, if applicable.
+- The 3–5 priorities the user named in Question 3, with the P1/P2 tags assigned during the tagging step.
+- Any deadlines from Question 4 (formatted as "— due [date]"), defaulting to [P2].
+- Any rolled-over unchecked items from Question 2, if applicable, preserving any existing priority tags or defaulting to [P2].
 
 Add a context tag in double brackets (e.g., `[work]` or `[home]`) if the user specified a context for that item. If the context filter was set in Step 2 (e.g., work-only session), default untagged items to that context tag rather than `[both]`. Only use `[both]` if context is genuinely ambiguous or the session filter was already `both`.
 
@@ -191,10 +194,10 @@ last_week=2026-W14
 ```
 ## Priorities
 
-- [ ] Finish report — due 2026-04-11 [work]
-- [ ] Start Q2 planning [work]
-- [ ] Review architecture docs [work]
-- [ ] All-hands meeting — due 2026-04-17 [work]
+- [ ] Finish report — due 2026-04-11 [work] [P1]
+- [ ] Start Q2 planning [work] [P2]
+- [ ] Review architecture docs [work] [P2]
+- [ ] All-hands meeting — due 2026-04-17 [work] [P2]
 ```
 
 **Step 7:** User sees: "Priorities saved to `weekly/2026-W15.md`. Suggest running `/goals-upcoming` to see all upcoming due dates across weeks."

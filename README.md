@@ -1,6 +1,6 @@
 # Goals — Personal Project Management Skills for Claude Code
 
-A suite of 9 Claude Code skills for structured goal tracking at every cadence, from daily to quarterly. Covers work and home contexts in a single unified system. Includes project workplanning with milestones, stub-based week-file integration, and an upcoming deadlines scanner.
+A suite of 11 Claude Code skills for structured goal tracking at every cadence, from daily to quarterly. Covers work and home contexts in a single unified system. Includes project workplanning with milestones, stub-based week-file integration, an upcoming deadlines scanner, end-of-day and end-of-week reflection workflows, and a P1/P2/P3 priority system with soft limits.
 
 Inspired by [Dex](https://github.com/davekilleen/Dex) and built skills-first (Phase 1). A session-start hook and scheduled reminders are planned for Phase 2 once the file structure is stable in real use.
 
@@ -55,13 +55,22 @@ Triggers: `"show my goals"`, `"what am I working on"`, `"goals summary"`, `"orie
 ### Check-ins
 
 **`/goals-daily`**
-Plan your day. Full mode interviews you (top priorities, carryover); quick mode accepts a single line. Detects if today's entry already exists and offers to update it.
+Plan your day. Full mode interviews you (top priorities, carryover); quick mode accepts a single line. Tags tasks `[P1]` or `[P2]`, warns if you exceed 3 P1s. Surfaces carry-forwards from yesterday's reflection. Detects if today's entry already exists and offers to update it.
 Triggers: `"plan my day"`, `"daily check-in"`, `"what should I focus on today"`
 Quick mode keywords: `"quick"`, `"just log"`, `"briefly"`, `"one-line"`
 
+**`/goals-daily-review`**
+End-of-day review. Shows unchecked tasks in a numbered list, marks done/not-done in a single reply, then asks for a takeaway and carry-forward. Appends a `#### Reflection` block to today's log entry.
+Triggers: `"daily review"`, `"end of day"`, `"how did today go"`
+
 **`/goals-weekly`**
-Plan your week. Reviews last week's unchecked items, interviews you on rollover and new priorities, and writes a `## Priorities` section to the current week file.
+Plan your week. Reviews last week's unchecked items, interviews you on rollover and new priorities, tags priorities `[P1]`/`[P2]`, and writes a `## Priorities` section to the current week file.
 Triggers: `"plan my week"`, `"weekly review"`, `"weekly check-in"`
+
+**`/goals-weekly-review`**
+End-of-week reflection using the 4Ls framework (Liked, Learned, Lacked, Longed For). Reviews task progress, runs a structured interview, and writes a `## Weekly Reflection` section to the week file. Quick mode condenses to one question.
+Triggers: `"weekly review"`, `"end of week"`, `"how was my week"`
+Quick mode keywords: `"quick"`, `"briefly"`, `"short"`
 
 **`/goals-quarterly`**
 Plan your quarter. Reviews last quarter's progress, then interviews you on goals for each pillar. Handles update/start-fresh/add-to-them for existing quarter files.
@@ -72,7 +81,7 @@ Triggers: `"quarterly planning"`, `"quarterly review"`, `"set quarterly goals"`
 ### Upcoming & Scheduling
 
 **`/goals-upcoming`**
-Scans 4 weeks back for overdue/unchecked items and 12 weeks forward for milestones. Outputs four buckets: Overdue, This Week, Next 4 Weeks, Weeks 5–12.
+Scans 4 weeks back for overdue/unchecked items and 12 weeks forward for milestones. Outputs a P1 summary block at the top (if any), then four buckets: Overdue, This Week, Next 4 Weeks, Weeks 5–12. P1 items are listed first within each section; P3 items are counted, not listed (except overdue P3s always surface).
 Triggers: `"what's due"`, `"what's coming up"`, `"upcoming deadlines"`, `"what's behind schedule"`
 
 **`/goals-schedule`**
@@ -123,9 +132,13 @@ Weekly files use ISO 8601 week numbering (Monday = week start). No separate dail
 
 **`[scheduled]` tag** — Tasks added by `/goals-schedule` use `[scheduled]` instead of a stub-id, making them easy to distinguish from project milestones.
 
+**Priority tags** — Task lines support optional `[P1]`, `[P2]`, or `[P3]` tags. Untagged items are treated as P2. `/goals-daily` and `/goals-weekly` ask for priority per task and warn at soft limits (3 P1s/day, 5/week). `/goals-upcoming` surfaces a P1 summary block at the top and lists P1s first within sections.
+
+**Reflection blocks** — `/goals-daily-review` appends a `#### Reflection` block to today's log entry. The carry-forward field feeds into tomorrow's `/goals-daily` planning. `/goals-weekly-review` appends a `## Weekly Reflection` section using the 4Ls framework.
+
 ---
 
-## Phase 2 (Planned)
+## Phase 3 (Planned)
 
 - **Session-start hook** — injects a ~10-line summary (active quarterly goals, weekly priorities, overdue items) into every Claude Code session automatically
 - **Scheduled reminders** — Monday morning triggers `/goals-weekly`; first day of quarter triggers `/goals-quarterly`
