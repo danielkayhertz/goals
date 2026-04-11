@@ -67,7 +67,21 @@ Remember this for Step 5.
 
 ---
 
-## Step 3: Ask which week to review
+## Step 3: Detect context filter
+
+Check the user's **invocation message** for whole-word occurrences of "both" and "home" (detection uses the invocation message only; it does not re-fire when the user responds to Step 4's week-selection question):
+
+- If "both" is present (alone or alongside "home") → filter = **both**
+- Else if "home" is present as a whole word → filter = **home**
+- Otherwise → filter = **work** (default)
+
+Tell the user: "Reviewing your **[work/home/both]** week. Say 'home' or 'both' when invoking to change."
+
+Store CONTEXT_FILTER for use in Step 5.
+
+---
+
+## Step 4: Ask which week to review
 
 Ask the user:
 
@@ -79,7 +93,7 @@ Wait for the user's response. Use the selected week for all subsequent file read
 
 ---
 
-## Step 4: Read the week file and show summary
+## Step 5: Read the week file and show summary
 
 Read the file at:
 
@@ -88,12 +102,13 @@ Read the file at:
 ```
 
 - If the file does not exist: tell the user "No file found for [SELECTED_WEEK]. Nothing to review." and stop.
-- Count lines matching `- [x]` (completed tasks) and `- [ ]` (open tasks) anywhere in the file.
-- Show the user: "Week [SELECTED_WEEK]: [N] tasks done, [M] open."
+- Count lines matching `- [x]` (completed tasks) and `- [ ]` (open tasks) anywhere in the file, filtered to CONTEXT_FILTER. Include untagged items in both counts (backward-compat).
+  - Filter rule: `context == CONTEXT_FILTER OR context == "both" OR untagged`
+- Show the user: "Week [SELECTED_WEEK] — [work/home/both]: [N] done, [M] open."
 
 ---
 
-## Step 5: Reflection interview
+## Step 6: Reflection interview
 
 ### Full mode (default)
 
@@ -116,7 +131,7 @@ Skip the remaining questions.
 
 ---
 
-## Step 6: Write weekly reflection section
+## Step 7: Write weekly reflection section
 
 Check whether the selected week file already contains a `## Weekly Reflection` section (search for `## Weekly Reflection` anywhere near the end of the file).
 
@@ -148,7 +163,7 @@ Replace all bracketed placeholders with the user's actual responses before writi
 
 ---
 
-## Step 7: Confirm
+## Step 8: Confirm
 
 Tell the user: "Weekly reflection saved to [SELECTED_WEEK].md."
 

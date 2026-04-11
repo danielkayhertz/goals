@@ -39,16 +39,21 @@ If both fail, use the current date from the system context (2026-04-10) and calc
 
 Store these four values for use in later steps.
 
-### Step 2: Check for Context Filter
+### Step 2: Detect context filter
 
-Ask the user (or check context from earlier conversation): "Are you setting priorities for **work**, **home**, or **both** this week?"
+Check the user's **invocation message** for whole-word occurrences of "both" and "home" (not subsequent messages in the session):
 
-Record the filter. Rule for showing items:
+- If "both" is present (alone or alongside "home") → filter = **both**
+- Else if "home" is present as a whole word → filter = **home**
+- Otherwise → filter = **work** (default)
+
+State the filter to the user: "I'll focus on **[work/home/both]** items. Say 'home' or 'both' when invoking to change."
+
+Filter rule for showing items:
 - If filter is `work`: show items where `context == "work" OR context == "both"`
 - If filter is `home`: show items where `context == "home" OR context == "both"`
-- If filter is `both` (or no filter given): show all items
-
-State this filter explicitly to the user: "I'll focus on [work/home/both] items."
+- If filter is `both`: show all items
+- Untagged items always match (backward-compat)
 
 ### Step 3: Review Last Week's Unchecked Items (if available)
 
@@ -178,7 +183,7 @@ quarter=2026-Q2
 last_week=2026-W14
 ```
 
-**Step 2:** User says "work". Filter set to work.
+**Step 2:** User invokes with no keyword → filter set to work. Announces "I'll focus on **work** items."
 
 **Step 3:** `2026-W14.md` exists; unchecked item found: "- [ ] Finish report". User sees: "From last week, this item was unchecked: Finish report. We'll ask about rolling it over."
 

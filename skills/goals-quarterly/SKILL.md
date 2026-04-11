@@ -41,13 +41,17 @@ Read `~/Documents/Claude Code/goals/pillars.md`. If missing, tell user:
 
 Stop workflow if file is missing.
 
-### Step 3: Ask for Context Filter (Optional)
-Optionally ask user: "Are you reviewing work, home, or both goals this quarter?"
-- If "work": apply context filter to show only `context: work` or `context: both` pillars
-- If "home": apply context filter to show only `context: home` or `context: both` pillars
-- If user says "both" (or doesn't respond): show all pillars
+### Step 3: Detect Context Filter
 
-The rule: `context == filter OR context == "both"`. No filter = show all.
+Check the user's **invocation message** for whole-word occurrences of "both" and "home" (not subsequent messages in the session):
+
+- If "both" is present (alone or alongside "home") → filter = **both** ("both" takes priority as the most inclusive)
+- Else if "home" is present as a whole word → filter = **home**
+- Otherwise → filter = **work** (default, no question asked)
+
+Announce the active filter: "I'll focus on **[work/home/both]** pillars. Say 'home' or 'both' when invoking to change."
+
+Store CONTEXT_FILTER for use in Step 4. Filter rule: `context == CONTEXT_FILTER OR context == "both"`. Untagged pillars always match (backward-compat).
 
 ### Step 4: Extract Pillars
 From `## Pillars` section in pillars.md, extract pillar names and their context tags (inline as `[work]`, `[home]`, or `[both]`). Apply context filter from Step 3.

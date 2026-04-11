@@ -50,7 +50,19 @@ From this output, extract:
 - `iso_week` (e.g., "2026-W15")
 - `yesterday` (YYYY-MM-DD)
 
-## Step 2: Read or create the current week file
+## Step 2: Detect context filter
+
+Check the user's **invocation message** for whole-word occurrences of "both" and "home" (not subsequent messages in the session):
+
+- If "both" is present (alone or alongside "home") → filter = **both**
+- Else if "home" is present as a whole word → filter = **home**
+- Otherwise → filter = **work** (default)
+
+Tell the user: "Planning your **[work/home/both]** day. Say 'home' or 'both' when invoking to change."
+
+Store CONTEXT_FILTER for use in Steps 5 and 6.
+
+## Step 3: Read or create the current week file
 
 The weekly file is located at: `~/Documents/Claude Code/goals/weekly/[ISO_WEEK].md`
 
@@ -72,7 +84,7 @@ Replace `[ISO_WEEK]` with the week identifier (e.g., "2026-W15") and `[TODAY]` w
 
 **If the file DOES exist**, read its full contents.
 
-## Step 3: Idempotency check
+## Step 4: Idempotency check
 
 Look in the `## Daily Log` section for a heading matching `### [WEEKDAY] [TODAY]`.
 
@@ -84,9 +96,9 @@ Look in the `## Daily Log` section for a heading matching `### [WEEKDAY] [TODAY]
    - **Replace**: Rewrite the entire section with new content
    - **Leave**: Exit without making any changes
 
-**If not found**: Proceed to Step 4.
+**If not found**: Proceed to Step 5.
 
-## Step 4: Detect mode
+## Step 5: Detect mode
 
 Check if the user's message contains any of these keywords: "quick", "just log", "briefly", "one-line".
 
@@ -94,10 +106,11 @@ Check if the user's message contains any of these keywords: "quick", "just log",
 Ask the user: "What's your one-line log for today?"
 - Accept a single line of input
 - Skip the interview questions and priority tagging — all tasks default to `[P2]`
-- Proceed directly to Step 5
+- Task line format: `- [ ] [task] [[CONTEXT_FILTER]] [P2]`
+- Proceed directly to Step 6
 
 **Full mode (default):**
-Before the interview, check for yesterday's reflection: read yesterday's `### [Weekday DATE]` section from the current week file (or last week's file if today is Monday). Look for a `#### Reflection` block. If found and the 'Carry forward:' field is not '—', surface it to the user: 'From yesterday's reflection — carry forward: [text]. Keep this in mind as you plan today.' If not found or field is '—', skip silently.
+Before the interview, check for yesterday's reflection: read yesterday's `### [Weekday DATE]` section from the current week file (or last week's file if today is Monday). Look for a `#### Reflection` block. If found and the 'Carry forward:' field is not '—', surface it to the user: 'From yesterday's reflection — carry forward: [text]. Keep this in mind as you plan today.' This check is not filtered by CONTEXT_FILTER — always show the carry-forward if present.
 
 Run an interview with ONE question at a time:
 1. "What are your top 2–3 priorities for today?"
@@ -108,29 +121,29 @@ After the user provides their priorities, ask for each task one at a time: 'Is *
 
 Wait for the user's response to each question before moving to the next.
 
-## Step 5: Write today's entry
+## Step 6: Write today's entry
 
-Add a new section to `## Daily Log` in the weekly file with this format.
+Add a new section to `## Daily Log` in the weekly file. Use CONTEXT_FILTER as the default context tag on every task line.
 
 Format like this:
 
 ### [WEEKDAY] [TODAY]
-- [ ] [Priority 1] [[context]] [P1]
-- [ ] [Priority 2] [[context]] [P2]
+- [ ] [Priority 1] [[CONTEXT_FILTER]] [P1]
+- [ ] [Priority 2] [[CONTEXT_FILTER]] [P2]
 *(carried over: [item])* — only if user mentioned a carryover
-
-Note: context tag is optional, priority tag (`[P1]` or `[P2]`) is always included.
 
 Rules:
 - Replace `[WEEKDAY]` with the day name (e.g., "Thursday")
 - Replace `[TODAY]` with the date in YYYY-MM-DD format
+- Replace `[CONTEXT_FILTER]` with the active filter (e.g., `work`, `home`, or `both`)
 - Use checkboxes (`- [ ]`) for each priority
+- Priority tag (`[P1]` or `[P2]`) is always included
 - If the user mentioned carryover items in the interview, add a line: `*(carried over: [item])*`
 - If no carryover, omit that line
 
 Update the `updated:` field in the frontmatter to today's date (YYYY-MM-DD).
 
-## Step 6: Confirm
+## Step 7: Confirm
 
 After writing the entry:
 1. Show the user exactly what was written

@@ -30,7 +30,21 @@ Store:
 
 ---
 
-## Step 2: Read week file
+## Step 2: Detect context filter
+
+Check the user's **invocation message** for whole-word occurrences of "both" and "home" (not subsequent messages in the session):
+
+- If "both" is present (alone or alongside "home") → filter = **both**
+- Else if "home" is present as a whole word → filter = **home**
+- Otherwise → filter = **work** (default)
+
+Tell the user: "Reviewing your **[work/home/both]** day. Say 'home' or 'both' when invoking to change."
+
+Store CONTEXT_FILTER for use in Step 5.
+
+---
+
+## Step 3: Read week file
 
 Path: `~/Documents/Claude Code/goals/weekly/[ISO_WEEK].md`
 
@@ -42,7 +56,7 @@ Then stop.
 
 ---
 
-## Step 3: Find today's section
+## Step 4: Find today's section
 
 Look for a heading matching `### [WEEKDAY] [TODAY]` (e.g. `### Thursday 2026-04-10`).
 
@@ -56,19 +70,21 @@ Then stop.
 
 ---
 
-## Step 4: Extract unchecked tasks
+## Step 5: Extract unchecked tasks
 
-Within today's section only, find all lines matching `- [ ]`.
+Within today's section only, find all lines matching `- [ ]`. Apply CONTEXT_FILTER: keep a task if its context tag (`[work]`, `[home]`, `[both]`) matches the filter, or if it has no context tag (untagged tasks always match).
 
-If none are found, tell the user:
+- Filter rule: `context == CONTEXT_FILTER OR context == "both" OR untagged`
 
-    No open tasks for today — nothing to review.
+If none match after filtering, tell the user:
+
+    No open [work/home] tasks for today — nothing to review.
 
 Then stop.
 
 ---
 
-## Step 5: Batch status check
+## Step 6: Batch status check
 
 Display the unchecked tasks numbered, like this:
 
@@ -84,7 +100,7 @@ Wait for the user's response. Map the selected numbers to `- [x]`; all others re
 
 ---
 
-## Step 6: Update file in place
+## Step 7: Update file in place
 
 - Read the full file content.
 - Within today's section only, replace each original `- [ ]` task line with its updated version (checked or unchanged).
@@ -93,17 +109,19 @@ Wait for the user's response. Map the selected numbers to `- [x]`; all others re
 
 ---
 
-## Step 7: Show summary
+## Step 8: Show summary
 
 Tell the user:
 
-    Today ([TODAY]): [N] done, [M] not done.
+    Today ([TODAY]) — [work/home/both]: [N] done, [M] not done.
+
+(Use the active CONTEXT_FILTER label in place of [work/home/both].)
 
 where N = tasks marked done, M = tasks left unchecked.
 
 ---
 
-## Step 8: Ask for takeaway
+## Step 9: Ask for takeaway
 
 Ask:
 
@@ -113,7 +131,7 @@ Wait for the user's response. They may skip (blank response or "skip" or "none")
 
 ---
 
-## Step 9: Ask for carry-forward
+## Step 10: Ask for carry-forward
 
 Ask:
 
@@ -123,7 +141,9 @@ Wait for the user's response. They may skip. Store the response, or use `—` if
 
 ---
 
-## Step 10: Write reflection block
+## Step 11: Write reflection block
+
+Note: Steps 9–10 questions are free-form and not context-filtered — they apply to the whole day regardless of active context.
 
 Check whether `#### Reflection` already exists within today's section.
 
@@ -173,7 +193,7 @@ If overwriting an existing reflection: replace the old `#### Reflection` block (
 
 ---
 
-## Step 11: Write updated file and confirm
+## Step 12: Write updated file and confirm
 
 Write the full updated file content to `~/Documents/Claude Code/goals/weekly/[ISO_WEEK].md`.
 
