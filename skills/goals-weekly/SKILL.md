@@ -61,12 +61,12 @@ Read the file at: `~/Documents/Claude Code/goals/weekly/[LAST_WEEK].md`
 
 For example, if `last_week=2026-W14`, read `~/Documents/Claude Code/goals/weekly/2026-W14.md`
 
-Search for all unchecked items (lines starting with `- [ ]`) in the `## Daily Log` and `## Priorities` sections.
+Search for all unchecked items (lines starting with `- [ ]`) in the `## Daily Log` and `## Priorities` sections. Apply CONTEXT_FILTER: keep only items tagged `[[CONTEXT_FILTER]]` or `[both]`, plus untagged items (backward-compat).
 
-If file exists and unchecked items are found:
+If file exists and matching unchecked items are found:
 - Tell the user: "From last week, these items were unchecked: [list them, preserving any [P1]/[P2]/[P3] tags already present]. We'll ask about rolling them over in a moment."
 
-If file does not exist or has no unchecked items:
+If file does not exist, has no unchecked items, or no items match the filter:
 - Skip this step silently (no mention to the user).
 
 ### Step 4: Read or Create This Week's File
@@ -94,8 +94,8 @@ Replace `[ISO_WEEK]` with the value from Step 1 (e.g., `2026-W15`).
 Replace `[TODAY]` with the value from Step 1 (e.g., `2026-04-10`).
 
 **If the file DOES exist:**
-- Read its current `## Priorities` section and show it to the user (so they see what's already there).
-- Tell the user: "Here's what's currently in this week's priorities. We can add, refine, or replace them."
+- Read its current `## Priorities` section. Filter items to only those tagged `[[CONTEXT_FILTER]]` or `[both]`, plus untagged items (backward-compat). Show only the filtered items to the user.
+- Tell the user: "Here's what's currently in this week's [work/home/both] priorities. We can add, refine, or replace them."
 
 ### Step 5: Interview — ONE QUESTION AT A TIME
 

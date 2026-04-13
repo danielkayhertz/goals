@@ -89,9 +89,10 @@ Replace `[ISO_WEEK]` with the week identifier (e.g., "2026-W15") and `[TODAY]` w
 Look in the `## Daily Log` section for a heading matching `### [WEEKDAY] [TODAY]`.
 
 **If found:**
-1. Show the user the existing entry.
-2. Ask: "I found today's log entry. Would you like to add to it, replace it, or leave it as-is?"
-3. Wait for the user's choice:
+1. Filter the existing entry's task lines to only those tagged `[[CONTEXT_FILTER]]` or `[both]`. Omit lines tagged with other contexts.
+2. If no task lines remain after filtering, treat this as if no entry was found and proceed to Step 5.
+3. Otherwise, show the user the filtered entry and ask: "I found today's log entry (showing [CONTEXT_FILTER] items). Would you like to add to it, replace it, or leave it as-is?"
+4. Wait for the user's choice:
    - **Add**: Append new items to the existing `### [WEEKDAY] [TODAY]` section
    - **Replace**: Rewrite the entire section with new content
    - **Leave**: Exit without making any changes
@@ -110,7 +111,7 @@ Ask the user: "What's your one-line log for today?"
 - Proceed directly to Step 6
 
 **Full mode (default):**
-Before the interview, check for yesterday's reflection: read yesterday's `### [Weekday DATE]` section from the current week file (or last week's file if today is Monday). Look for a `#### Reflection` block. If found and the 'Carry forward:' field is not '—', surface it to the user: 'From yesterday's reflection — carry forward: [text]. Keep this in mind as you plan today.' This check is not filtered by CONTEXT_FILTER — always show the carry-forward if present.
+Before the interview, check for yesterday's reflection: read yesterday's `### [Weekday DATE]` section from the current week file (or last week's file if today is Monday). Look for a `#### Reflection` block. If found and the 'Carry forward:' field is not '—', apply CONTEXT_FILTER: check whether yesterday's incomplete items (`- [ ]` lines) include any tagged `[[CONTEXT_FILTER]]` or `[both]`. Only surface the carry-forward text if at least one such item exists. When surfacing: 'From yesterday's reflection — carry forward: [text]. Keep this in mind as you plan today.'
 
 Run an interview with ONE question at a time:
 1. "What are your top 2–3 priorities for today?"
