@@ -117,6 +117,8 @@ Run an interview with ONE question at a time:
 
 After the user provides their priorities, ask for each task one at a time: 'Is **[task name]** a must-do today? (P1) or normal priority? [default: P2]' Wait for response. Tag P1 → `[P1]`, P2 or no answer → `[P2]`. After all tasks tagged, count P1s. If > 3: 'You have [N] P1 tasks — recommended max is 3 per day. Your P1s: [numbered list]. Downgrade any to P2? (reply with numbers, or keep all)' Soft warning — user decides.
 
+**Project tag assignment:** After P1/P2 tagging, read the project index at `~/Documents/Claude Code/goals/projects/INDEX.md`. For each priority that does not already have a `[proj:slug]` tag, propose one based on the slug list and task text. Present all proposals at once: "Suggested project tags — correct any or say 'none':" then list each task with its proposed `[proj:slug]`. Wait for confirmation before writing. Tag order per item: `[[context]] [proj:slug] [P1/P2]`.
+
 2. "Anything carrying over from yesterday that you didn't finish?"
 
 Wait for the user's response to each question before moving to the next.
@@ -128,8 +130,8 @@ Add a new section to `## Daily Log` in the weekly file. Use CONTEXT_FILTER as th
 Format like this:
 
 ### [WEEKDAY] [TODAY]
-- [ ] [Priority 1] [[CONTEXT_FILTER]] [P1]
-- [ ] [Priority 2] [[CONTEXT_FILTER]] [P2]
+- [ ] [Priority 1] [[CONTEXT_FILTER]] [proj:slug] [P1]
+- [ ] [Priority 2] [[CONTEXT_FILTER]] [proj:slug] [P2]
 *(carried over: [item])* — only if user mentioned a carryover
 
 Rules:
@@ -137,6 +139,7 @@ Rules:
 - Replace `[TODAY]` with the date in YYYY-MM-DD format
 - Replace `[CONTEXT_FILTER]` with the active filter (e.g., `work`, `home`, or `both`)
 - Use checkboxes (`- [ ]`) for each priority
+- Tag order: `[[context]] [proj:slug] [P1/P2]`
 - Priority tag (`[P1]` or `[P2]`) is always included
 - If the user mentioned carryover items in the interview, add a line: `*(carried over: [item])*`
 - If no carryover, omit that line

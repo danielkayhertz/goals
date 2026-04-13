@@ -101,19 +101,28 @@ Replace `[TODAY]` with the value from Step 1 (e.g., `2026-04-10`).
 
 Wait for the user's answer after each question before moving to the next.
 
-**Question 1:** "What did you accomplish last week? (Share 2–3 things you're proud of.)"
+**Prior week reflection (opening context — not a question):**
 
-- Wait for the user to answer.
-- Acknowledge briefly and move to the next question.
+Read the `## Weekly Reflection` section from the last week's file (`[LAST_WEEK].md`). If the section exists, surface it to the user before the interview begins:
 
-**Question 2 (ONLY if Step 3 found unchecked items):**
+"Here's your reflection from last week ([LAST_WEEK]):
+**Liked:** [value]
+**Learned:** [value]
+**Lacked:** [value]
+**Longed For:** [value]
+**Focus for next week:** [value]
+**Carry-forwards:** [value]"
+
+If the file does not exist or has no `## Weekly Reflection` section, skip silently.
+
+**Question 1 (ONLY if Step 3 found unchecked items, filtered by CONTEXT_FILTER):**
 "These were unchecked last week: [list them]. Which ones do you want to roll over to this week?"
 
 - Wait for the user's answer.
 - Record which items they want to keep.
 - Move to the next question.
 
-**Question 3:** "What are your top 3–5 priorities for this week?"
+**Question 2:** "What are your top 3–5 priorities for this week?"
 
 - Apply the context filter from Step 2: only suggest items relevant to the chosen context (work/home/both).
 - Wait for the user to provide their priorities.
@@ -121,28 +130,36 @@ Wait for the user's answer after each question before moving to the next.
 - After all priorities are tagged, count P1s. If > 5: "You have [N] P1 priorities this week — recommended max is 5. Your P1s: [numbered list]. Downgrade any to P2? (reply with numbers, or keep all)" Soft warning — user decides.
 - Move to the next question.
 
-**Question 4:** "Any deadlines or milestones due this week I should note?"
+**Question 3:** "Any deadlines or milestones due this week I should note?"
 
 - Wait for the user's answer.
 - Note any dates mentioned.
 
 ### Step 6: Write the Priorities Section
 
+**Project tag assignment (before writing):**
+
+Read the project index at `~/Documents/Claude Code/goals/projects/INDEX.md` to get the current list of project slugs.
+
+For each priority item that does not already have a `[proj:slug]` tag, propose a project tag based on the slug list and the priority text. Present all proposals at once: "Here are my suggested project tags — correct any that are wrong or say 'none' for items with no project:" Then list each priority with its proposed `[proj:slug]`. Wait for the user to confirm or correct before writing. If no reasonable match exists for a priority, propose `[proj:none]` and let the user assign one.
+
 Replace everything from the `## Priorities` heading up to (but not including) the `## Daily Log` heading. Do not modify the `## Daily Log` section or any of its contents. Only update the `updated:` value in the frontmatter.
 
 Replace the `## Priorities` section in the week's file with a fresh bulleted list. Format like this:
 
-- [ ] [Priority text] [[context tag if known]] [P1]
-- [ ] [Priority text] [[context tag if known]] [P2]
-- [ ] [Deadline text] — due [date] [[context tag]] [P2]
-- [ ] [Rolled-over item from last week] [[context tag]] [P2]
+- [ ] [Priority text] [[context tag]] [proj:slug] [P1]
+- [ ] [Priority text] [[context tag]] [proj:slug] [P2]
+- [ ] [Deadline text] — due [date] [[context tag]] [proj:slug] [P2]
+- [ ] [Rolled-over item from last week] [[context tag]] [proj:slug] [P2]
 
 Include:
-- The 3–5 priorities the user named in Question 3, with the P1/P2 tags assigned during the tagging step.
-- Any deadlines from Question 4 (formatted as "— due [date]"), defaulting to [P2].
-- Any rolled-over unchecked items from Question 2, if applicable, preserving any existing priority tags or defaulting to [P2].
+- The 3–5 priorities the user named in Question 2, with the P1/P2 tags assigned during the tagging step.
+- Any deadlines from Question 3 (formatted as "— due [date]"), defaulting to [P2].
+- Any rolled-over unchecked items from Question 1, if applicable, preserving any existing priority tags or defaulting to [P2].
 
 Add a context tag in double brackets (e.g., `[work]` or `[home]`) if the user specified a context for that item. If the context filter was set in Step 2 (e.g., work-only session), default untagged items to that context tag rather than `[both]`. Only use `[both]` if context is genuinely ambiguous or the session filter was already `both`.
+
+Tag order per item: `[[context]] [proj:slug] [P1/P2]`
 
 Update the frontmatter field `updated:` to today's date (from Step 1).
 
@@ -166,10 +183,12 @@ End the skill execution.
 2. **Date context:** If date command fails, fall back to system context or ask the user.
 3. **No triple-backtick templates:** Priority list format shown as "Format like this:" with plain prose, no fenced code blocks.
 4. **Path format:** All paths use `~/...` with forward slashes only.
-5. **Context filter rule:** Explicitly stated—"show if `context == filter OR context == "both"`"—and applied in Question 3.
+5. **Context filter rule:** Explicitly stated—"show if `context == filter OR context == "both"`"—and applied in Question 2.
 6. **YAML frontmatter:** `name: goals-weekly` included in header.
 7. **Interview sequence:** One question at a time, wait for each answer, unambiguous decision points.
 8. **Last-week review step:** Clear conditional logic—only shown if file exists AND unchecked items found; skipped silently otherwise.
+9. **Prior week reflection:** Surface `## Weekly Reflection` from last week's file before the interview; skip silently if absent.
+10. **Project tags:** Read `goals/projects/INDEX.md`; propose `[proj:slug]` for each priority; confirm before writing. Tag order: `[[context]] [proj:slug] [P1/P2]`.
 
 ## Example Execution (Illustrative)
 
@@ -190,19 +209,19 @@ last_week=2026-W14
 **Step 4:** `2026-W15.md` does not exist; created with template.
 
 **Step 5 Interview:**
-- Q1: User says "Shipped new feature, fixed 3 bugs, reviewed design docs."
-- Q2: User says "Yes, roll over the report."
-- Q3: User says "Finish report, start Q2 planning, review architecture docs."
-- Q4: User says "Report due Friday, all-hands Thursday."
+- Prior week reflection surfaced from `2026-W14.md` `## Weekly Reflection`.
+- Q1: User says "Yes, roll over the report."
+- Q2: User says "Finish report, start Q2 planning, review architecture docs."
+- Q3: User says "Report due Friday, all-hands Thursday."
 
-**Step 6:** Priorities section written:
+**Step 6:** Project tags proposed ("Here are my suggested project tags…"), user confirms. Priorities section written:
 ```
 ## Priorities
 
-- [ ] Finish report — due 2026-04-11 [work] [P1]
-- [ ] Start Q2 planning [work] [P2]
-- [ ] Review architecture docs [work] [P2]
-- [ ] All-hands meeting — due 2026-04-17 [work] [P2]
+- [ ] Finish report — due 2026-04-11 [work] [proj:reporting] [P1]
+- [ ] Start Q2 planning [work] [proj:strategy] [P2]
+- [ ] Review architecture docs [work] [proj:platform] [P2]
+- [ ] All-hands meeting — due 2026-04-17 [work] [proj:none] [P2]
 ```
 
 **Step 7:** User sees: "Priorities saved to `weekly/2026-W15.md`. Suggest running `/goals-upcoming` to see all upcoming due dates across weeks."
